@@ -1,2 +1,2 @@
 org.springframework.aot.hint.RuntimeHintsRegistrar=\
-	aot.org.springframework.ai.sensetime.sensenova.ZhipuAiRuntimeHints
+	org.springframework.ai.sensetime.sensenova.aot.SensetimeAiSensenovaRuntimeHints

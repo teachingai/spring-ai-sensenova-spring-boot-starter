@@ -24,9 +24,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class ZhipuAiApi {
+public class SensetimeAiSensenovaApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(ZhipuAiApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(SensetimeAiSensenovaApi.class);
     private static final Predicate<String> SSE_DONE_PREDICATE = "[DONE]"::equals;
     private static final String REQUEST_BODY_NULL_ERROR = "The request body can not be null.";
 
@@ -36,30 +36,30 @@ public class ZhipuAiApi {
 
     /**
      * Create a new client api with DEFAULT_BASE_URL
-     * @param apiKey ZhipuAI api Key.
+     * @param apiKey Sensetime AI Sensenova api Key.
      */
-    public ZhipuAiApi(String apiKey) {
+    public SensetimeAiSensenovaApi(String apiKey) {
         this(ApiUtils.DEFAULT_BASE_URL, apiKey);
     }
 
     /**
      * Create a new client api.
      * @param baseUrl api base URL.
-     * @param apiKey ZhipuAI api Key.
+     * @param apiKey Sensetime AI Sensenova api Key.
      */
-    public ZhipuAiApi(String baseUrl, String apiKey) {
+    public SensetimeAiSensenovaApi(String baseUrl, String apiKey) {
         this(baseUrl, apiKey, RestClient.builder(), RetryUtils.DEFAULT_RESPONSE_ERROR_HANDLER);
     }
 
     /**
      * Create a new client api.
      * @param baseUrl api base URL.
-     * @param apiKey ZhipuAI api Key.
+     * @param apiKey Sensetime AI Sensenova api Key.
      * @param restClientBuilder RestClient builder.
      * @param responseErrorHandler Response error handler.
      */
-    public ZhipuAiApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder,
-                        ResponseErrorHandler responseErrorHandler) {
+    public SensetimeAiSensenovaApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder,
+                                   ResponseErrorHandler responseErrorHandler) {
 
         Consumer<HttpHeaders> jsonContentHeaders = ApiUtils.getJsonContentHeaders(apiKey);
 
@@ -439,11 +439,11 @@ public class ZhipuAiApi {
 
 
     /**
-     * List of well-known 智普AI chat models.
+     * List of well-known Sensetime AI Sensenova chat models.
      * https://open.bigmodel.cn/dev/api#language
      *
      * <p>
-     * 智普AI AI provides three API endpoints featuring five leading Large Language
+     * Sensetime AI Sensenova AI provides three API endpoints featuring five leading Large Language
      * Models:
      * </p>
      * <ul>
@@ -471,7 +471,7 @@ public class ZhipuAiApi {
     }
 
     /**
-     * List of well-known 智普AI embedding models.
+     * List of well-known Sensetime AI Sensenova embedding models.
      * https://open.bigmodel.cn/dev/api#text_embedding
      */
     public enum EmbeddingModel {
@@ -493,10 +493,10 @@ public class ZhipuAiApi {
     /**
      * Creates a model response for the given chat conversation.
      * @param chatRequest The chat completion request.
-     * @return Entity response with {@link ZhipuAiApi.ChatCompletion} as a body and HTTP status code
+     * @return Entity response with {@link SensetimeAiSensenovaApi.ChatCompletion} as a body and HTTP status code
      * and headers.
      */
-    public ResponseEntity<ZhipuAiApi.ChatCompletion> chatCompletionEntity(ZhipuAiApi.ChatCompletionRequest chatRequest) {
+    public ResponseEntity<SensetimeAiSensenovaApi.ChatCompletion> chatCompletionEntity(SensetimeAiSensenovaApi.ChatCompletionRequest chatRequest) {
 
         Assert.notNull(chatRequest, "The request body can not be null.");
         Assert.isTrue(!chatRequest.stream(), "Request must set the steam property to false.");
@@ -505,10 +505,10 @@ public class ZhipuAiApi {
                 .uri("/api/paas/v4/chat/completions")
                 .body(chatRequest)
                 .retrieve()
-                .toEntity(ZhipuAiApi.ChatCompletion.class);
+                .toEntity(SensetimeAiSensenovaApi.ChatCompletion.class);
     }
 
-    private ZhipuAiStreamFunctionCallingHelper chunkMerger = new ZhipuAiStreamFunctionCallingHelper();
+    private SensetimeAiSensenovaStreamFunctionCallingHelper chunkMerger = new SensetimeAiSensenovaStreamFunctionCallingHelper();
 
     /**
      * Creates a streaming chat response for the given chat conversation.
@@ -618,7 +618,7 @@ public class ZhipuAiApi {
          * @param input Input text to embed.
          */
         public EmbeddingRequest(String input) {
-            this(input, ZhipuAiApi.EmbeddingModel.EMBED.getValue());
+            this(input, SensetimeAiSensenovaApi.EmbeddingModel.EMBED.getValue());
         }
     }
 
@@ -637,7 +637,7 @@ public class ZhipuAiApi {
             @JsonProperty("object") String object,
             @JsonProperty("data") List<T> data,
             @JsonProperty("model") String model,
-            @JsonProperty("usage") ZhipuAiApi.Usage usage) {
+            @JsonProperty("usage") SensetimeAiSensenovaApi.Usage usage) {
         // @formatter:on
     }
 
@@ -686,7 +686,7 @@ public class ZhipuAiApi {
     /**
      * Creates an embedding vector representing the input text.
      * @param embeddingRequest The embedding request.
-     * @return Returns list of {@link ZhipuAiApi.Embedding} wrapped in {@link ZhipuAiApi.EmbeddingList}.
+     * @return Returns list of {@link SensetimeAiSensenovaApi.Embedding} wrapped in {@link SensetimeAiSensenovaApi.EmbeddingList}.
      * @param <T> Type of the entity in the data list. Can be a {@link String}
      */
     public <T> ResponseEntity<EmbeddingList<Embedding>> embeddings(EmbeddingRequest embeddingRequest) {

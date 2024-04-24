@@ -7,8 +7,8 @@ import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.*;
 import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.retry.RetryUtils;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiApi;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiEmbeddingOptions;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaApi;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaEmbeddingOptions;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -19,39 +19,39 @@ public class SensetimeAiSensenovaEmbeddingClient extends AbstractEmbeddingClient
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final ZhipuAiEmbeddingOptions defaultOptions;
+    private final SensetimeAiSensenovaEmbeddingOptions defaultOptions;
 
     private final MetadataMode metadataMode;
 
     /**
      * Low-level 智普 API library.
      */
-    private final ZhipuAiApi zhipuAiApi;
+    private final SensetimeAiSensenovaApi sensetimeAiSensenovaApi;
 
     private final RetryTemplate retryTemplate;
 
-    public SensetimeAiSensenovaEmbeddingClient(ZhipuAiApi zhipuAiApi) {
-        this(zhipuAiApi, MetadataMode.EMBED);
+    public SensetimeAiSensenovaEmbeddingClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi) {
+        this(sensetimeAiSensenovaApi, MetadataMode.EMBED);
     }
 
-    public SensetimeAiSensenovaEmbeddingClient(ZhipuAiApi zhipuAiApi, MetadataMode metadataMode) {
-        this(zhipuAiApi, metadataMode, ZhipuAiEmbeddingOptions.builder()
-                        .withModel(ZhipuAiApi.EmbeddingModel.EMBED.getValue()).build(),
+    public SensetimeAiSensenovaEmbeddingClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi, MetadataMode metadataMode) {
+        this(sensetimeAiSensenovaApi, metadataMode, SensetimeAiSensenovaEmbeddingOptions.builder()
+                        .withModel(SensetimeAiSensenovaApi.EmbeddingModel.EMBED.getValue()).build(),
                 RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
 
-    public SensetimeAiSensenovaEmbeddingClient(ZhipuAiApi zhipuAiApi, ZhipuAiEmbeddingOptions options) {
-        this(zhipuAiApi, MetadataMode.EMBED, options, RetryUtils.DEFAULT_RETRY_TEMPLATE);
+    public SensetimeAiSensenovaEmbeddingClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi, SensetimeAiSensenovaEmbeddingOptions options) {
+        this(sensetimeAiSensenovaApi, MetadataMode.EMBED, options, RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
 
-    public SensetimeAiSensenovaEmbeddingClient(ZhipuAiApi zhipuAiApi, MetadataMode metadataMode,
-                                               ZhipuAiEmbeddingOptions options, RetryTemplate retryTemplate) {
-        Assert.notNull(zhipuAiApi, "ZhipuAiApi must not be null");
+    public SensetimeAiSensenovaEmbeddingClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi, MetadataMode metadataMode,
+                                               SensetimeAiSensenovaEmbeddingOptions options, RetryTemplate retryTemplate) {
+        Assert.notNull(sensetimeAiSensenovaApi, "ZhipuAiApi must not be null");
         Assert.notNull(metadataMode, "metadataMode must not be null");
         Assert.notNull(options, "options must not be null");
         Assert.notNull(retryTemplate, "retryTemplate must not be null");
 
-        this.zhipuAiApi = zhipuAiApi;
+        this.sensetimeAiSensenovaApi = sensetimeAiSensenovaApi;
         this.metadataMode = metadataMode;
         this.defaultOptions = options;
         this.retryTemplate = retryTemplate;
@@ -73,14 +73,14 @@ public class SensetimeAiSensenovaEmbeddingClient extends AbstractEmbeddingClient
             }
             var inputContent = CollectionUtils.firstElement(request.getInstructions());
             var apiRequest = (this.defaultOptions != null)
-                    ? new ZhipuAiApi.EmbeddingRequest(inputContent, this.defaultOptions.getModel())
-                    : new ZhipuAiApi.EmbeddingRequest(inputContent, ZhipuAiApi.EmbeddingModel.EMBED.getValue());
+                    ? new SensetimeAiSensenovaApi.EmbeddingRequest(inputContent, this.defaultOptions.getModel())
+                    : new SensetimeAiSensenovaApi.EmbeddingRequest(inputContent, SensetimeAiSensenovaApi.EmbeddingModel.EMBED.getValue());
 
             if (request.getOptions() != null && !EmbeddingOptions.EMPTY.equals(request.getOptions())) {
-                apiRequest = ModelOptionsUtils.merge(request.getOptions(), apiRequest, ZhipuAiApi.EmbeddingRequest.class);
+                apiRequest = ModelOptionsUtils.merge(request.getOptions(), apiRequest, SensetimeAiSensenovaApi.EmbeddingRequest.class);
             }
 
-            var apiEmbeddingResponse = this.zhipuAiApi.embeddings(apiRequest).getBody();
+            var apiEmbeddingResponse = this.sensetimeAiSensenovaApi.embeddings(apiRequest).getBody();
 
             if (apiEmbeddingResponse == null) {
                 logger.warn("No embeddings returned for request: {}", request);
@@ -99,7 +99,7 @@ public class SensetimeAiSensenovaEmbeddingClient extends AbstractEmbeddingClient
         });
     }
 
-    private EmbeddingResponseMetadata generateResponseMetadata(String model, ZhipuAiApi.Usage usage) {
+    private EmbeddingResponseMetadata generateResponseMetadata(String model, SensetimeAiSensenovaApi.Usage usage) {
         var metadata = new EmbeddingResponseMetadata();
         metadata.put("model", model);
         metadata.put("prompt-tokens", usage.promptTokens());

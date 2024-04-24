@@ -4,11 +4,11 @@ import org.springframework.ai.image.ImageGenerationMetadata;
 
 import java.util.Objects;
 
-public class ZhipuAiImageGenerationMetadata implements ImageGenerationMetadata {
+public class SensetimeAiSensenovaImageGenerationMetadata implements ImageGenerationMetadata {
 
     private String revisedPrompt;
 
-    public ZhipuAiImageGenerationMetadata(String revisedPrompt) {
+    public SensetimeAiSensenovaImageGenerationMetadata(String revisedPrompt) {
         this.revisedPrompt = revisedPrompt;
     }
 
@@ -26,7 +26,7 @@ public class ZhipuAiImageGenerationMetadata implements ImageGenerationMetadata {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ZhipuAiImageGenerationMetadata that)) {
+        if (!(o instanceof SensetimeAiSensenovaImageGenerationMetadata that)) {
             return false;
         }
         return Objects.equals(revisedPrompt, that.revisedPrompt);

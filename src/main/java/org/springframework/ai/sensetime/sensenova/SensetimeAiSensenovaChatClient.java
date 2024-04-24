@@ -13,8 +13,8 @@ import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.model.function.AbstractFunctionCallSupport;
 import org.springframework.ai.model.function.FunctionCallbackContext;
 import org.springframework.ai.retry.RetryUtils;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiApi;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiChatOptions;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaApi;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaChatOptions;
 import org.springframework.ai.sensetime.sensenova.util.ApiUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.support.RetryTemplate;
@@ -26,23 +26,23 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SensetimeAiSensenovaChatClient
-        extends AbstractFunctionCallSupport<ZhipuAiApi.ChatCompletionMessage, ZhipuAiApi.ChatCompletionRequest, ResponseEntity<ZhipuAiApi.ChatCompletion>>
+        extends AbstractFunctionCallSupport<SensetimeAiSensenovaApi.ChatCompletionMessage, SensetimeAiSensenovaApi.ChatCompletionRequest, ResponseEntity<SensetimeAiSensenovaApi.ChatCompletion>>
         implements ChatClient, StreamingChatClient {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     /**
      * Default options to be used for all chat requests.
      */
-    private ZhipuAiChatOptions defaultOptions;
+    private SensetimeAiSensenovaChatOptions defaultOptions;
     /**
      * Low-level 智普 API library.
      */
-    private final ZhipuAiApi zhipuAiApi;
+    private final SensetimeAiSensenovaApi sensetimeAiSensenovaApi;
     private final RetryTemplate retryTemplate;
 
-    public SensetimeAiSensenovaChatClient(ZhipuAiApi zhipuAiApi) {
-        this(zhipuAiApi, ZhipuAiChatOptions.builder()
-                        .withModel(ZhipuAiApi.ChatModel.GLM_3_TURBO.getValue())
+    public SensetimeAiSensenovaChatClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi) {
+        this(sensetimeAiSensenovaApi, SensetimeAiSensenovaChatOptions.builder()
+                        .withModel(SensetimeAiSensenovaApi.ChatModel.GLM_3_TURBO.getValue())
                         .withMaxToken(ApiUtils.DEFAULT_MAX_TOKENS)
                         .withDoSample(Boolean.TRUE)
                         .withTemperature(ApiUtils.DEFAULT_TEMPERATURE)
@@ -50,17 +50,17 @@ public class SensetimeAiSensenovaChatClient
                         .build());
     }
 
-    public SensetimeAiSensenovaChatClient(ZhipuAiApi zhipuAiApi, ZhipuAiChatOptions options) {
-        this(zhipuAiApi, options, null, RetryUtils.DEFAULT_RETRY_TEMPLATE);
+    public SensetimeAiSensenovaChatClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi, SensetimeAiSensenovaChatOptions options) {
+        this(sensetimeAiSensenovaApi, options, null, RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
 
-    public SensetimeAiSensenovaChatClient(ZhipuAiApi zhipuAiApi, ZhipuAiChatOptions options,
+    public SensetimeAiSensenovaChatClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi, SensetimeAiSensenovaChatOptions options,
                                           FunctionCallbackContext functionCallbackContext, RetryTemplate retryTemplate) {
         super(functionCallbackContext);
-        Assert.notNull(zhipuAiApi, "ZhipuAiApi must not be null");
+        Assert.notNull(sensetimeAiSensenovaApi, "ZhipuAiApi must not be null");
         Assert.notNull(options, "Options must not be null");
         Assert.notNull(retryTemplate, "RetryTemplate must not be null");
-        this.zhipuAiApi = zhipuAiApi;
+        this.sensetimeAiSensenovaApi = sensetimeAiSensenovaApi;
         this.defaultOptions = options;
         this.retryTemplate = retryTemplate;
     }
@@ -73,7 +73,7 @@ public class SensetimeAiSensenovaChatClient
 
         return retryTemplate.execute(ctx -> {
 
-            ResponseEntity<ZhipuAiApi.ChatCompletion> completionEntity = this.callWithFunctionSupport(request);
+            ResponseEntity<SensetimeAiSensenovaApi.ChatCompletion> completionEntity = this.callWithFunctionSupport(request);
 
             var chatCompletion = completionEntity.getBody();
             if (chatCompletion == null) {
@@ -91,7 +91,7 @@ public class SensetimeAiSensenovaChatClient
         });
     }
 
-    private Map<String, Object> toMap(String id, ZhipuAiApi.ChatCompletion.Choice choice) {
+    private Map<String, Object> toMap(String id, SensetimeAiSensenovaApi.ChatCompletion.Choice choice) {
         Map<String, Object> map = new HashMap<>();
 
         var message = choice.message();
@@ -111,7 +111,7 @@ public class SensetimeAiSensenovaChatClient
 
         return retryTemplate.execute(ctx -> {
 
-            var completionChunks = this.zhipuAiApi.chatCompletionStream(request);
+            var completionChunks = this.sensetimeAiSensenovaApi.chatCompletionStream(request);
 
             // For chunked responses, only the first chunk contains the choice role.
             // The rest of the chunks with same ID share the same role.
@@ -143,29 +143,29 @@ public class SensetimeAiSensenovaChatClient
         });
     }
 
-    private ZhipuAiApi.ChatCompletion toChatCompletion(ZhipuAiApi.ChatCompletionChunk chunk) {
-        List<ZhipuAiApi.ChatCompletion.Choice> choices = chunk.choices()
+    private SensetimeAiSensenovaApi.ChatCompletion toChatCompletion(SensetimeAiSensenovaApi.ChatCompletionChunk chunk) {
+        List<SensetimeAiSensenovaApi.ChatCompletion.Choice> choices = chunk.choices()
                 .stream()
-                .map(cc -> new ZhipuAiApi.ChatCompletion.Choice(cc.index(), cc.delta(), cc.finishReason()))
+                .map(cc -> new SensetimeAiSensenovaApi.ChatCompletion.Choice(cc.index(), cc.delta(), cc.finishReason()))
                 .toList();
 
-        return new ZhipuAiApi.ChatCompletion(chunk.id(), "chat.completion", chunk.created(), chunk.model(), choices, chunk.requestId(),null);
+        return new SensetimeAiSensenovaApi.ChatCompletion(chunk.id(), "chat.completion", chunk.created(), chunk.model(), choices, chunk.requestId(),null);
     }
 
     /**
      * Accessible for testing.
      */
-    ZhipuAiApi.ChatCompletionRequest createRequest(Prompt prompt, boolean stream) {
+    SensetimeAiSensenovaApi.ChatCompletionRequest createRequest(Prompt prompt, boolean stream) {
 
         Set<String> functionsForThisRequest = new HashSet<>();
 
         var chatCompletionMessages = prompt.getInstructions()
                 .stream()
-                .map(m -> new ZhipuAiApi.ChatCompletionMessage(m.getContent(),
-                        ZhipuAiApi.ChatCompletionMessage.Role.valueOf(m.getMessageType().name())))
+                .map(m -> new SensetimeAiSensenovaApi.ChatCompletionMessage(m.getContent(),
+                        SensetimeAiSensenovaApi.ChatCompletionMessage.Role.valueOf(m.getMessageType().name())))
                 .toList();
 
-        var request = new ZhipuAiApi.ChatCompletionRequest(null, chatCompletionMessages, stream);
+        var request = new SensetimeAiSensenovaApi.ChatCompletionRequest(null, chatCompletionMessages, stream);
 
         if (this.defaultOptions != null) {
             Set<String> defaultEnabledFunctions = this.handleFunctionCallbackConfigurations(this.defaultOptions,
@@ -173,20 +173,20 @@ public class SensetimeAiSensenovaChatClient
 
             functionsForThisRequest.addAll(defaultEnabledFunctions);
 
-            request = ModelOptionsUtils.merge(request, this.defaultOptions, ZhipuAiApi.ChatCompletionRequest.class);
+            request = ModelOptionsUtils.merge(request, this.defaultOptions, SensetimeAiSensenovaApi.ChatCompletionRequest.class);
         }
 
         if (prompt.getOptions() != null) {
             if (prompt.getOptions() instanceof ChatOptions runtimeOptions) {
                 var updatedRuntimeOptions = ModelOptionsUtils.copyToTarget(runtimeOptions, ChatOptions.class,
-                        ZhipuAiChatOptions.class);
+                        SensetimeAiSensenovaChatOptions.class);
 
                 Set<String> promptEnabledFunctions = this.handleFunctionCallbackConfigurations(updatedRuntimeOptions,
                         IS_RUNTIME_CALL);
                 functionsForThisRequest.addAll(promptEnabledFunctions);
 
                 request = ModelOptionsUtils.merge(updatedRuntimeOptions, request,
-                        ZhipuAiApi.ChatCompletionRequest.class);
+                        SensetimeAiSensenovaApi.ChatCompletionRequest.class);
             }
             else {
                 throw new IllegalArgumentException("Prompt options are not of type ChatOptions: "
@@ -198,18 +198,18 @@ public class SensetimeAiSensenovaChatClient
         if (!CollectionUtils.isEmpty(functionsForThisRequest)) {
 
             request = ModelOptionsUtils.merge(
-                    ZhipuAiChatOptions.builder().withTools(this.getFunctionTools(functionsForThisRequest)).build(),
-                    request, ZhipuAiApi.ChatCompletionRequest.class);
+                    SensetimeAiSensenovaChatOptions.builder().withTools(this.getFunctionTools(functionsForThisRequest)).build(),
+                    request, SensetimeAiSensenovaApi.ChatCompletionRequest.class);
         }
 
         return request;
     }
 
-    private List<ZhipuAiApi.FunctionTool> getFunctionTools(Set<String> functionNames) {
+    private List<SensetimeAiSensenovaApi.FunctionTool> getFunctionTools(Set<String> functionNames) {
         return this.resolveFunctionCallbacks(functionNames).stream().map(functionCallback -> {
-            var function = new ZhipuAiApi.FunctionTool.Function(functionCallback.getDescription(),
+            var function = new SensetimeAiSensenovaApi.FunctionTool.Function(functionCallback.getDescription(),
                     functionCallback.getName(), functionCallback.getInputTypeSchema());
-            return new ZhipuAiApi.FunctionTool(function);
+            return new SensetimeAiSensenovaApi.FunctionTool(function);
         }).toList();
     }
 
@@ -217,13 +217,13 @@ public class SensetimeAiSensenovaChatClient
     // Function Calling Support
     //
     @Override
-    protected ZhipuAiApi.ChatCompletionRequest doCreateToolResponseRequest(ZhipuAiApi.ChatCompletionRequest previousRequest,
-                                                                           ZhipuAiApi.ChatCompletionMessage responseMessage,
-                                                                           List<ZhipuAiApi.ChatCompletionMessage> conversationHistory) {
+    protected SensetimeAiSensenovaApi.ChatCompletionRequest doCreateToolResponseRequest(SensetimeAiSensenovaApi.ChatCompletionRequest previousRequest,
+                                                                                        SensetimeAiSensenovaApi.ChatCompletionMessage responseMessage,
+                                                                                        List<SensetimeAiSensenovaApi.ChatCompletionMessage> conversationHistory) {
 
         // Every tool-call item requires a separate function call and a response (TOOL)
         // message.
-        for (ZhipuAiApi.ChatCompletionMessage.ToolCall toolCall : responseMessage.toolCalls()) {
+        for (SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall toolCall : responseMessage.toolCalls()) {
 
             var functionName = toolCall.function().name();
             String functionArguments = toolCall.function().arguments();
@@ -236,35 +236,35 @@ public class SensetimeAiSensenovaChatClient
 
             // Add the function response to the conversation.
             conversationHistory
-                    .add(new ZhipuAiApi.ChatCompletionMessage(functionResponse, ZhipuAiApi.ChatCompletionMessage.Role.TOOL, functionName, null));
+                    .add(new SensetimeAiSensenovaApi.ChatCompletionMessage(functionResponse, SensetimeAiSensenovaApi.ChatCompletionMessage.Role.TOOL, functionName, null));
         }
 
         // Recursively call chatCompletionWithTools until the model doesn't call a
         // functions anymore.
-        ZhipuAiApi.ChatCompletionRequest newRequest = new ZhipuAiApi.ChatCompletionRequest(previousRequest.requestId(), conversationHistory, false);
-        newRequest = ModelOptionsUtils.merge(newRequest, previousRequest, ZhipuAiApi.ChatCompletionRequest.class);
+        SensetimeAiSensenovaApi.ChatCompletionRequest newRequest = new SensetimeAiSensenovaApi.ChatCompletionRequest(previousRequest.requestId(), conversationHistory, false);
+        newRequest = ModelOptionsUtils.merge(newRequest, previousRequest, SensetimeAiSensenovaApi.ChatCompletionRequest.class);
 
         return newRequest;
     }
 
     @Override
-    protected List<ZhipuAiApi.ChatCompletionMessage> doGetUserMessages(ZhipuAiApi.ChatCompletionRequest request) {
+    protected List<SensetimeAiSensenovaApi.ChatCompletionMessage> doGetUserMessages(SensetimeAiSensenovaApi.ChatCompletionRequest request) {
         return request.messages();
     }
 
     @SuppressWarnings("null")
     @Override
-    protected ZhipuAiApi.ChatCompletionMessage doGetToolResponseMessage(ResponseEntity<ZhipuAiApi.ChatCompletion> chatCompletion) {
+    protected SensetimeAiSensenovaApi.ChatCompletionMessage doGetToolResponseMessage(ResponseEntity<SensetimeAiSensenovaApi.ChatCompletion> chatCompletion) {
         return chatCompletion.getBody().choices().iterator().next().message();
     }
 
     @Override
-    protected ResponseEntity<ZhipuAiApi.ChatCompletion> doChatCompletion(ZhipuAiApi.ChatCompletionRequest request) {
-        return this.zhipuAiApi.chatCompletionEntity(request);
+    protected ResponseEntity<SensetimeAiSensenovaApi.ChatCompletion> doChatCompletion(SensetimeAiSensenovaApi.ChatCompletionRequest request) {
+        return this.sensetimeAiSensenovaApi.chatCompletionEntity(request);
     }
 
     @Override
-    protected boolean isToolFunctionCall(ResponseEntity<ZhipuAiApi.ChatCompletion> chatCompletion) {
+    protected boolean isToolFunctionCall(ResponseEntity<SensetimeAiSensenovaApi.ChatCompletion> chatCompletion) {
 
         var body = chatCompletion.getBody();
         if (body == null) {

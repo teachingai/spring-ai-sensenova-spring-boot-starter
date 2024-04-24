@@ -1,40 +1,40 @@
 package org.springframework.ai.sensetime.sensenova.autoconfigure;
 
 import org.springframework.ai.document.MetadataMode;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiApi;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiEmbeddingOptions;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaApi;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaEmbeddingOptions;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-@ConfigurationProperties(ZhipuAiEmbeddingProperties.CONFIG_PREFIX)
-public class ZhipuAiEmbeddingProperties {
+@ConfigurationProperties(SensetimeAiSensenovaEmbeddingProperties.CONFIG_PREFIX)
+public class SensetimeAiSensenovaEmbeddingProperties {
 
-    public static final String CONFIG_PREFIX = "spring.ai.zhipuai.embedding";
+    public static final String CONFIG_PREFIX = "spring.ai.sensetimeai.sensenova.embedding";
 
-    public static final String DEFAULT_EMBEDDING_MODEL = ZhipuAiApi.EmbeddingModel.EMBED.getValue();
+    public static final String DEFAULT_EMBEDDING_MODEL = SensetimeAiSensenovaApi.EmbeddingModel.EMBED.getValue();
 
     /**
-     * Enable 智普AI embedding client.
+     * Enable Sensetime AI Sensenova embedding client.
      */
     private boolean enabled = true;
 
     public MetadataMode metadataMode = MetadataMode.EMBED;
 
     /**
-     * Client lever 智普AI options. Use this property to configure generative temperature,
+     * Client lever Sensetime AI Sensenova options. Use this property to configure generative temperature,
      * topK and topP and alike parameters. The null values are ignored defaulting to the
      * generative's defaults.
      */
     @NestedConfigurationProperty
-    private ZhipuAiEmbeddingOptions options = ZhipuAiEmbeddingOptions.builder()
+    private SensetimeAiSensenovaEmbeddingOptions options = SensetimeAiSensenovaEmbeddingOptions.builder()
             .withModel(DEFAULT_EMBEDDING_MODEL)
             .build();
 
-    public ZhipuAiEmbeddingOptions getOptions() {
+    public SensetimeAiSensenovaEmbeddingOptions getOptions() {
         return this.options;
     }
 
-    public void setOptions(ZhipuAiEmbeddingOptions options) {
+    public void setOptions(SensetimeAiSensenovaEmbeddingOptions options) {
         this.options = options;
     }
 

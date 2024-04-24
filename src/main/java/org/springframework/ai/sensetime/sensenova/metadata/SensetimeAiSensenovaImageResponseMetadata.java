@@ -1,21 +1,21 @@
 package org.springframework.ai.sensetime.sensenova.metadata;
 
 import org.springframework.ai.image.ImageResponseMetadata;
-import org.springframework.ai.sensetime.sensenova.api.ZhipuAiImageApi;
+import org.springframework.ai.sensetime.sensenova.api.SensetimeAiSensenovaImageApi;
 import org.springframework.util.Assert;
 
 import java.util.Objects;
 
-public class ZhipuAiImageResponseMetadata implements ImageResponseMetadata {
+public class SensetimeAiSensenovaImageResponseMetadata implements ImageResponseMetadata {
 
     private final Long created;
 
-    public static ZhipuAiImageResponseMetadata from(ZhipuAiImageApi.ZhipuAiImageResponse ZhipuAiImageResponse) {
+    public static SensetimeAiSensenovaImageResponseMetadata from(SensetimeAiSensenovaImageApi.ZhipuAiImageResponse ZhipuAiImageResponse) {
         Assert.notNull(ZhipuAiImageResponse, "ZhipuAiImageResponse must not be null");
-        return new ZhipuAiImageResponseMetadata(ZhipuAiImageResponse.created());
+        return new SensetimeAiSensenovaImageResponseMetadata(ZhipuAiImageResponse.created());
     }
 
-    protected ZhipuAiImageResponseMetadata(Long created) {
+    protected SensetimeAiSensenovaImageResponseMetadata(Long created) {
         this.created = created;
     }
 
@@ -33,7 +33,7 @@ public class ZhipuAiImageResponseMetadata implements ImageResponseMetadata {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof ZhipuAiImageResponseMetadata that))
+        if (!(o instanceof SensetimeAiSensenovaImageResponseMetadata that))
             return false;
         return Objects.equals(created, that.created);
     }

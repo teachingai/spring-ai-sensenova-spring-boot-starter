@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ZhipuAiChatOptions implements FunctionCallingOptions, ChatOptions {
+public class SensetimeAiSensenovaChatOptions implements FunctionCallingOptions, ChatOptions {
 
     /**
      * 模型输出最大 tokens，最大输出为8192，默认值为1024
@@ -65,13 +65,13 @@ public class ZhipuAiChatOptions implements FunctionCallingOptions, ChatOptions {
      * 可供模型调用的工具列表,tools 字段会计算 tokens ，同样受到 tokens 长度的限制
      */
     @NestedConfigurationProperty
-    private @JsonProperty("tools") List<ZhipuAiApi.FunctionTool> tools;
+    private @JsonProperty("tools") List<SensetimeAiSensenovaApi.FunctionTool> tools;
 
     /**
      * 用于控制模型是如何选择要调用的函数，仅当工具类型为function时补充。默认为auto，当前仅支持auto
      */
     @NestedConfigurationProperty
-    private @JsonProperty("tool_choice") ZhipuAiApi.ChatCompletionRequest.ToolChoice toolChoice;
+    private @JsonProperty("tool_choice") SensetimeAiSensenovaApi.ChatCompletionRequest.ToolChoice toolChoice;
 
     @Override
     public List<FunctionCallback> getFunctionCallbacks() {
@@ -99,7 +99,7 @@ public class ZhipuAiChatOptions implements FunctionCallingOptions, ChatOptions {
 
     public static class Builder {
 
-        private final ZhipuAiChatOptions options = new ZhipuAiChatOptions();
+        private final SensetimeAiSensenovaChatOptions options = new SensetimeAiSensenovaChatOptions();
 
         public Builder withModel(String model) {
             this.options.setModel(model);
@@ -136,17 +136,17 @@ public class ZhipuAiChatOptions implements FunctionCallingOptions, ChatOptions {
             return this;
         }
 
-        public Builder withTools(List<ZhipuAiApi.FunctionTool> tools) {
+        public Builder withTools(List<SensetimeAiSensenovaApi.FunctionTool> tools) {
             this.options.setTools(tools);
             return this;
         }
 
-        public Builder withToolChoice(ZhipuAiApi.ChatCompletionRequest.ToolChoice toolChoice) {
+        public Builder withToolChoice(SensetimeAiSensenovaApi.ChatCompletionRequest.ToolChoice toolChoice) {
             this.options.setToolChoice(toolChoice);
             return this;
         }
 
-        public ZhipuAiChatOptions build() {
+        public SensetimeAiSensenovaChatOptions build() {
             return this.options;
         }
 
@@ -221,24 +221,24 @@ public class ZhipuAiChatOptions implements FunctionCallingOptions, ChatOptions {
         return model;
     }
 
-    public List<ZhipuAiApi.FunctionTool> getTools() {
+    public List<SensetimeAiSensenovaApi.FunctionTool> getTools() {
         return tools;
     }
 
-    public void setTools(List<ZhipuAiApi.FunctionTool> tools) {
+    public void setTools(List<SensetimeAiSensenovaApi.FunctionTool> tools) {
         this.tools = tools;
     }
 
-    public ZhipuAiApi.ChatCompletionRequest.ToolChoice getToolChoice() {
+    public SensetimeAiSensenovaApi.ChatCompletionRequest.ToolChoice getToolChoice() {
         return toolChoice;
     }
 
-    public void setToolChoice(ZhipuAiApi.ChatCompletionRequest.ToolChoice toolChoice) {
+    public void setToolChoice(SensetimeAiSensenovaApi.ChatCompletionRequest.ToolChoice toolChoice) {
         this.toolChoice = toolChoice;
     }
 
     /**
-     * Convert the {@link ZhipuAiChatOptions} object to a {@link Map} of key/value pairs.
+     * Convert the {@link SensetimeAiSensenovaChatOptions} object to a {@link Map} of key/value pairs.
      * @return The {@link Map} of key/value pairs.
      */
     public Map<String, Object> toMap() {
@@ -253,11 +253,11 @@ public class ZhipuAiChatOptions implements FunctionCallingOptions, ChatOptions {
     }
 
     /**
-     * Helper factory method to create a new {@link ZhipuAiChatOptions} instance.
-     * @return A new {@link ZhipuAiChatOptions} instance.
+     * Helper factory method to create a new {@link SensetimeAiSensenovaChatOptions} instance.
+     * @return A new {@link SensetimeAiSensenovaChatOptions} instance.
      */
-    public static ZhipuAiChatOptions create() {
-        return new ZhipuAiChatOptions();
+    public static SensetimeAiSensenovaChatOptions create() {
+        return new SensetimeAiSensenovaChatOptions();
     }
 
     /**

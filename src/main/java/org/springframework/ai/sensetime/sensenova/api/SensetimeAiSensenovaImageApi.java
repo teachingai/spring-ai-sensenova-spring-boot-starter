@@ -11,39 +11,39 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
-public class ZhipuAiImageApi {
+public class SensetimeAiSensenovaImageApi {
 
     public static final String DEFAULT_IMAGE_MODEL = ImageModel.COGVIEW_3.getValue();
 
     private final RestClient restClient;
 
     /**
-     * Create a new ZhipuAI Image api with base URL set to https://api.moonshot.cn
-     * @param apiKey ZhipuAI apiKey.
+     * Create a new Sensetime AI Sensenova Image api with base URL set to https://api.moonshot.cn
+     * @param apiKey Sensetime AI Sensenova apiKey.
      */
-    public ZhipuAiImageApi(String apiKey) {
+    public SensetimeAiSensenovaImageApi(String apiKey) {
         this(ApiUtils.DEFAULT_BASE_URL, apiKey, RestClient.builder());
     }
 
     /**
-     * Create a new ZhipuAI Image API with the provided base URL.
-     * @param baseUrl the base URL for the ZhipuAI API.
-     * @param apiKey ZhipuAI apiKey.
+     * Create a new Sensetime AI Sensenova Image API with the provided base URL.
+     * @param baseUrl the base URL for the Sensetime AI Sensenova API.
+     * @param apiKey Sensetime AI Sensenova apiKey.
      * @param restClientBuilder the rest client builder to use.
      */
-    public ZhipuAiImageApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder) {
+    public SensetimeAiSensenovaImageApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder) {
         this(baseUrl, apiKey, restClientBuilder, RetryUtils.DEFAULT_RESPONSE_ERROR_HANDLER);
     }
 
     /**
-     * Create a new ZhipuAI Image API with the provided base URL.
-     * @param baseUrl the base URL for the ZhipuAI API.
-     * @param apiKey ZhipuAI apiKey.
+     * Create a new Sensetime AI Sensenova Image API with the provided base URL.
+     * @param baseUrl the base URL for the Sensetime AI Sensenova API.
+     * @param apiKey Sensetime AI Sensenova apiKey.
      * @param restClientBuilder the rest client builder to use.
      * @param responseErrorHandler the response error handler to use.
      */
-    public ZhipuAiImageApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder,
-                           ResponseErrorHandler responseErrorHandler) {
+    public SensetimeAiSensenovaImageApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder,
+                                        ResponseErrorHandler responseErrorHandler) {
 
         this.restClient = restClientBuilder.baseUrl(baseUrl)
                 .defaultHeaders(ApiUtils.getJsonContentHeaders(apiKey))
@@ -52,7 +52,7 @@ public class ZhipuAiImageApi {
     }
 
     /**
-     * ZhipuAI Image API model.
+     * Sensetime AI Sensenova Image API model.
      * <a href="https://open.bigmodel.cn/dev/api#cogview">CogView</a>
      */
     public enum ImageModel {

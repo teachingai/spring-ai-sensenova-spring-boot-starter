@@ -8,7 +8,7 @@ import java.util.Objects;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ZhipuAiImageOptions implements ImageOptions {
+public class SensetimeAiSensenovaImageOptions implements ImageOptions {
 
     /**
      * The number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1
@@ -67,7 +67,7 @@ public class ZhipuAiImageOptions implements ImageOptions {
     private String style;
 
     /**
-     * A unique identifier representing your end-user, which can help ZhipuAI to monitor
+     * A unique identifier representing your end-user, which can help Sensetime AI Sensenova to monitor
      * and detect abuse.
      */
     @JsonProperty("user")
@@ -79,10 +79,10 @@ public class ZhipuAiImageOptions implements ImageOptions {
 
     public static class Builder {
 
-        private final ZhipuAiImageOptions options;
+        private final SensetimeAiSensenovaImageOptions options;
 
         private Builder() {
-            this.options = new ZhipuAiImageOptions();
+            this.options = new SensetimeAiSensenovaImageOptions();
         }
 
         public Builder withN(Integer n) {
@@ -125,7 +125,7 @@ public class ZhipuAiImageOptions implements ImageOptions {
             return this;
         }
 
-        public ZhipuAiImageOptions build() {
+        public SensetimeAiSensenovaImageOptions build() {
             return options;
         }
 
@@ -218,7 +218,7 @@ public class ZhipuAiImageOptions implements ImageOptions {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof ZhipuAiImageOptions that))
+        if (!(o instanceof SensetimeAiSensenovaImageOptions that))
             return false;
         return Objects.equals(n, that.n) && Objects.equals(model, that.model) && Objects.equals(width, that.width)
                 && Objects.equals(height, that.height) && Objects.equals(quality, that.quality)

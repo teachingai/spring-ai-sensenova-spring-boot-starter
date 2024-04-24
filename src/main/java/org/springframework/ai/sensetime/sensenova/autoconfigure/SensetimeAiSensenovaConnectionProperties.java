@@ -3,13 +3,13 @@ package org.springframework.ai.sensetime.sensenova.autoconfigure;
 import org.springframework.ai.sensetime.sensenova.util.ApiUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(ZhipuAiConnectionProperties.CONFIG_PREFIX)
-public class ZhipuAiConnectionProperties {
+@ConfigurationProperties(SensetimeAiSensenovaConnectionProperties.CONFIG_PREFIX)
+public class SensetimeAiSensenovaConnectionProperties {
 
-    public static final String CONFIG_PREFIX = "spring.ai.zhipuai";
+    public static final String CONFIG_PREFIX = "spring.ai.sensetimeai.sensenova";
 
     /**
-     * Base URL where 智普AI API server is running.
+     * Base URL where Sensetime AI Sensenova API server is running.
      */
     private String baseUrl = ApiUtils.DEFAULT_BASE_URL;
 

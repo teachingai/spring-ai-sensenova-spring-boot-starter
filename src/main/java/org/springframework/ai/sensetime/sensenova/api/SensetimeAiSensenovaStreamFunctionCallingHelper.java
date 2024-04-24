@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ZhipuAiStreamFunctionCallingHelper {
+public class SensetimeAiSensenovaStreamFunctionCallingHelper {
 
     /**
      * Merge the previous and current ChatCompletionChunk into a single one.
@@ -15,7 +15,7 @@ public class ZhipuAiStreamFunctionCallingHelper {
      * @param current the current ChatCompletionChunk
      * @return the merged ChatCompletionChunk
      */
-    public ZhipuAiApi.ChatCompletionChunk merge(ZhipuAiApi.ChatCompletionChunk previous, ZhipuAiApi.ChatCompletionChunk current) {
+    public SensetimeAiSensenovaApi.ChatCompletionChunk merge(SensetimeAiSensenovaApi.ChatCompletionChunk previous, SensetimeAiSensenovaApi.ChatCompletionChunk current) {
 
         if (previous == null) {
             return current;
@@ -27,15 +27,15 @@ public class ZhipuAiStreamFunctionCallingHelper {
         String requestId = (current.requestId() != null ? current.requestId() : previous.requestId());
         String object = (current.object() != null ? current.object() : previous.object());
 
-        ZhipuAiApi.ChatCompletionChunk.ChunkChoice previousChoice0 = (CollectionUtils.isEmpty(previous.choices()) ? null : previous.choices().get(0));
-        ZhipuAiApi.ChatCompletionChunk.ChunkChoice currentChoice0 = (CollectionUtils.isEmpty(current.choices()) ? null : current.choices().get(0));
+        SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice previousChoice0 = (CollectionUtils.isEmpty(previous.choices()) ? null : previous.choices().get(0));
+        SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice currentChoice0 = (CollectionUtils.isEmpty(current.choices()) ? null : current.choices().get(0));
 
-        ZhipuAiApi.ChatCompletionChunk.ChunkChoice choice = merge(previousChoice0, currentChoice0);
+        SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice choice = merge(previousChoice0, currentChoice0);
 
-        return new ZhipuAiApi.ChatCompletionChunk(id, object, created, model, requestId, List.of(choice));
+        return new SensetimeAiSensenovaApi.ChatCompletionChunk(id, object, created, model, requestId, List.of(choice));
     }
 
-    private ZhipuAiApi.ChatCompletionChunk.ChunkChoice merge(ZhipuAiApi.ChatCompletionChunk.ChunkChoice previous, ZhipuAiApi.ChatCompletionChunk.ChunkChoice current) {
+    private SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice merge(SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice previous, SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice current) {
         if (previous == null) {
             if (current.delta() != null && current.delta().toolCalls() != null) {
                 Optional<String> id = current.delta()
@@ -50,35 +50,35 @@ public class ZhipuAiStreamFunctionCallingHelper {
                     var toolCallsWithID = current.delta()
                             .toolCalls()
                             .stream()
-                            .map(toolCall -> new ZhipuAiApi.ChatCompletionMessage.ToolCall(newId, "function", toolCall.function()))
+                            .map(toolCall -> new SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall(newId, "function", toolCall.function()))
                             .toList();
 
-                    var role = current.delta().role() != null ? current.delta().role() : ZhipuAiApi.ChatCompletionMessage.Role.ASSISTANT;
-                    current = new ZhipuAiApi.ChatCompletionChunk.ChunkChoice(current.index(), new ZhipuAiApi.ChatCompletionMessage(current.delta().content(),
+                    var role = current.delta().role() != null ? current.delta().role() : SensetimeAiSensenovaApi.ChatCompletionMessage.Role.ASSISTANT;
+                    current = new SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice(current.index(), new SensetimeAiSensenovaApi.ChatCompletionMessage(current.delta().content(),
                             role, current.delta().name(), toolCallsWithID), current.finishReason());
                 }
             }
             return current;
         }
 
-        ZhipuAiApi.ChatCompletionFinishReason finishReason = (current.finishReason() != null ? current.finishReason()
+        SensetimeAiSensenovaApi.ChatCompletionFinishReason finishReason = (current.finishReason() != null ? current.finishReason()
                 : previous.finishReason());
         Integer index = (current.index() != null ? current.index() : previous.index());
 
-        ZhipuAiApi.ChatCompletionMessage message = merge(previous.delta(), current.delta());
+        SensetimeAiSensenovaApi.ChatCompletionMessage message = merge(previous.delta(), current.delta());
 
-        return new ZhipuAiApi.ChatCompletionChunk.ChunkChoice(index, message, finishReason);
+        return new SensetimeAiSensenovaApi.ChatCompletionChunk.ChunkChoice(index, message, finishReason);
     }
 
-    private ZhipuAiApi.ChatCompletionMessage merge(ZhipuAiApi.ChatCompletionMessage previous, ZhipuAiApi.ChatCompletionMessage current) {
+    private SensetimeAiSensenovaApi.ChatCompletionMessage merge(SensetimeAiSensenovaApi.ChatCompletionMessage previous, SensetimeAiSensenovaApi.ChatCompletionMessage current) {
         String content = (current.content() != null ? current.content()
                 : "" + ((previous.content() != null) ? previous.content() : ""));
-        ZhipuAiApi.ChatCompletionMessage.Role role = (current.role() != null ? current.role() : previous.role());
-        role = (role != null ? role : ZhipuAiApi.ChatCompletionMessage.Role.ASSISTANT); // default to ASSISTANT (if null
+        SensetimeAiSensenovaApi.ChatCompletionMessage.Role role = (current.role() != null ? current.role() : previous.role());
+        role = (role != null ? role : SensetimeAiSensenovaApi.ChatCompletionMessage.Role.ASSISTANT); // default to ASSISTANT (if null
         String name = (current.name() != null ? current.name() : previous.name());
 
-        List<ZhipuAiApi.ChatCompletionMessage.ToolCall> toolCalls = new ArrayList<>();
-        ZhipuAiApi.ChatCompletionMessage.ToolCall lastPreviousTooCall = null;
+        List<SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall> toolCalls = new ArrayList<>();
+        SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall lastPreviousTooCall = null;
         if (previous.toolCalls() != null) {
             lastPreviousTooCall = previous.toolCalls().get(previous.toolCalls().size() - 1);
             if (previous.toolCalls().size() > 1) {
@@ -105,20 +105,20 @@ public class ZhipuAiStreamFunctionCallingHelper {
                 toolCalls.add(lastPreviousTooCall);
             }
         }
-        return new ZhipuAiApi.ChatCompletionMessage(content, role, name, toolCalls);
+        return new SensetimeAiSensenovaApi.ChatCompletionMessage(content, role, name, toolCalls);
     }
 
-    private ZhipuAiApi.ChatCompletionMessage.ToolCall merge(ZhipuAiApi.ChatCompletionMessage.ToolCall previous, ZhipuAiApi.ChatCompletionMessage.ToolCall current) {
+    private SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall merge(SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall previous, SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall current) {
         if (previous == null) {
             return current;
         }
         String id = (current.id() != null ? current.id() : previous.id());
         String type = (current.type() != null ? current.type() : previous.type());
-        ZhipuAiApi.ChatCompletionMessage.ChatCompletionFunction function = merge(previous.function(), current.function());
-        return new ZhipuAiApi.ChatCompletionMessage.ToolCall(id, type, function);
+        SensetimeAiSensenovaApi.ChatCompletionMessage.ChatCompletionFunction function = merge(previous.function(), current.function());
+        return new SensetimeAiSensenovaApi.ChatCompletionMessage.ToolCall(id, type, function);
     }
 
-    private ZhipuAiApi.ChatCompletionMessage.ChatCompletionFunction merge(ZhipuAiApi.ChatCompletionMessage.ChatCompletionFunction previous, ZhipuAiApi.ChatCompletionMessage.ChatCompletionFunction current) {
+    private SensetimeAiSensenovaApi.ChatCompletionMessage.ChatCompletionFunction merge(SensetimeAiSensenovaApi.ChatCompletionMessage.ChatCompletionFunction previous, SensetimeAiSensenovaApi.ChatCompletionMessage.ChatCompletionFunction current) {
         if (previous == null) {
             return current;
         }
@@ -130,14 +130,14 @@ public class ZhipuAiStreamFunctionCallingHelper {
         if (current.arguments() != null) {
             arguments.append(current.arguments());
         }
-        return new ZhipuAiApi.ChatCompletionMessage.ChatCompletionFunction(name, arguments.toString());
+        return new SensetimeAiSensenovaApi.ChatCompletionMessage.ChatCompletionFunction(name, arguments.toString());
     }
 
     /**
      * @param chatCompletion the ChatCompletionChunk to check
      * @return true if the ChatCompletionChunk is a streaming tool function call.
      */
-    public boolean isStreamingToolFunctionCall(ZhipuAiApi.ChatCompletionChunk chatCompletion) {
+    public boolean isStreamingToolFunctionCall(SensetimeAiSensenovaApi.ChatCompletionChunk chatCompletion) {
 
         var choices = chatCompletion.choices();
         if (CollectionUtils.isEmpty(choices)) {
@@ -153,7 +153,7 @@ public class ZhipuAiStreamFunctionCallingHelper {
      * @return true if the ChatCompletionChunk is a streaming tool function call and it is
      * the last one.
      */
-    public boolean isStreamingToolFunctionCallFinish(ZhipuAiApi.ChatCompletionChunk chatCompletion) {
+    public boolean isStreamingToolFunctionCallFinish(SensetimeAiSensenovaApi.ChatCompletionChunk chatCompletion) {
 
         var choices = chatCompletion.choices();
         if (CollectionUtils.isEmpty(choices)) {
@@ -161,7 +161,7 @@ public class ZhipuAiStreamFunctionCallingHelper {
         }
 
         var choice = choices.get(0);
-        return choice.finishReason() == ZhipuAiApi.ChatCompletionFinishReason.TOOL_CALLS;
+        return choice.finishReason() == SensetimeAiSensenovaApi.ChatCompletionFinishReason.TOOL_CALLS;
     }
 
 }

@@ -15,37 +15,37 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-public class ZhipuAiFileApi {
+public class SensetimeAiSensenovaFileApi {
 
     private final RestClient restClient;
 
     /**
-     * Create a new ZhipuAI File api with base URL set to https://api.moonshot.cn
-     * @param apiKey ZhipuAI apiKey.
+     * Create a new Sensetime AI Sensenova File api with base URL set to https://api.moonshot.cn
+     * @param apiKey Sensetime AI Sensenova apiKey.
      */
-    public ZhipuAiFileApi(String apiKey) {
+    public SensetimeAiSensenovaFileApi(String apiKey) {
         this(ApiUtils.DEFAULT_BASE_URL, apiKey, RestClient.builder());
     }
 
     /**
-     * Create a new ZhipuAI File API with the provided base URL.
-     * @param baseUrl the base URL for the ZhipuAI API.
-     * @param apiKey ZhipuAI apiKey.
+     * Create a new Sensetime AI Sensenova File API with the provided base URL.
+     * @param baseUrl the base URL for the Sensetime AI Sensenova API.
+     * @param apiKey Sensetime AI Sensenova apiKey.
      * @param restClientBuilder the rest client builder to use.
      */
-    public ZhipuAiFileApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder) {
+    public SensetimeAiSensenovaFileApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder) {
         this(baseUrl, apiKey, restClientBuilder, RetryUtils.DEFAULT_RESPONSE_ERROR_HANDLER);
     }
 
     /**
-     * Create a new ZhipuAI File API with the provided base URL.
-     * @param baseUrl the base URL for the ZhipuAI API.
-     * @param apiKey ZhipuAI apiKey.
+     * Create a new Sensetime AI Sensenova File API with the provided base URL.
+     * @param baseUrl the base URL for the Sensetime AI Sensenova API.
+     * @param apiKey Sensetime AI Sensenova apiKey.
      * @param restClientBuilder the rest client builder to use.
      * @param responseErrorHandler the response error handler to use.
      */
-    public ZhipuAiFileApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder,
-                          ResponseErrorHandler responseErrorHandler) {
+    public SensetimeAiSensenovaFileApi(String baseUrl, String apiKey, RestClient.Builder restClientBuilder,
+                                       ResponseErrorHandler responseErrorHandler) {
 
         this.restClient = restClientBuilder.baseUrl(baseUrl)
                 .defaultHeaders(ApiUtils.getJsonContentHeaders(apiKey))
