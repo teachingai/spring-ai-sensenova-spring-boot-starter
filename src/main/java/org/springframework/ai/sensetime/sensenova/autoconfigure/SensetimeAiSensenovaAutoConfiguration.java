@@ -57,7 +57,7 @@ public class SensetimeAiSensenovaAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = MistralAiEmbeddingProperties.CONFIG_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = SensetimeAiSensenovaEmbeddingProperties.CONFIG_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
     public SensetimeAiSensenovaEmbeddingClient sensetimeAiSensenovaEmbeddingClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi,
                                                                       SensetimeAiSensenovaEmbeddingProperties embeddingProperties,
                                                                       RetryTemplate retryTemplate) {
