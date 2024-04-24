@@ -9,19 +9,21 @@
 - 模型更新: [https://platform.sensenova.cn/release?path=/release-202404.md](https://platform.sensenova.cn/release?path=/release-202404.md)
 - 体验中心: [https://platform.sensenova.cn/trialcenter](https://platform.sensenova.cn/trialcenter)
 
-#### 功能
+#### 支持的功能包括：
 
-- 对话生成支持函数调用（Function Call）能力，支持返回流式输出结果
-- Assistants
-- 支持function call功能：支持用户传入各类自定义工具，自动选择并调用工具，准确度达到99% 
-- 支持code interpreter功能：自动生成Python代码解决数学问题，降低直接数值计算错误，提升数学解题能力。在公开数学测评数据集上逼近GPT-4 Turbo的水平
+- 支持文本生成（Chat Completion API）
+- 支持多轮对话（Chat Completion API），支持返回流式输出结果
+- 支持函数调用（Function Calling）：用户传入各类自定义工具，自动选择并调用工具，准确度达到99%
+- 支持文本嵌入（Embeddings）
+- 支持图片生成（Image Generation API）
+- 支持助手API（Assistants API）
+- 支持 code interpreter功能：自动生成Python代码解决数学问题，降低直接数值计算错误，提升数学解题能力。在公开数学测评数据集上逼近GPT-4 Turbo的水平
 
 #### 资源
 
 - [查看模型列表](https://platform.sensenova.cn/doc?path=/chat/Models/GetModelList.md)
 - [商量大语言模型-通用](https://platform.sensenova.cn/doc?path=/model/llm/GeneralLLM.md)
 - [大语言模型](https://platform.sensenova.cn/doc?path=/chat/Introduction.md)
-
 
 #### 模型
 
@@ -38,7 +40,7 @@
 
 ``` xml
 <dependency>
-	<groupId>cn.teachingai</groupId>
+	<groupId>com.github.teachingai</groupId>
 	<artifactId>spring-ai-sensetime-sensenova-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
@@ -46,4 +48,8 @@
 
 ### Sample
 
+使用示例请参见 [Spring AI Examples](https://github.com/TeachingAI/spring-ai-examples)
 
+### License
+
+[Apache License 2.0](LICENSE)
