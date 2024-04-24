@@ -24,7 +24,7 @@ public class SensetimeAiSensenovaChatProperties {
      */
     @NestedConfigurationProperty
     private SensetimeAiSensenovaChatOptions options = SensetimeAiSensenovaChatOptions.builder()
-            .withModel(SensetimeAiSensenovaApi.ChatModel.GLM_3_TURBO.getValue())
+            .withModel(SensetimeAiSensenovaApi.ChatModel.SENSECHAT.getValue())
             .withMaxToken(ApiUtils.DEFAULT_MAX_TOKENS)
             .withDoSample(Boolean.TRUE)
             .withTemperature(ApiUtils.DEFAULT_TEMPERATURE)

@@ -11,8 +11,6 @@ public class SensetimeAiSensenovaEmbeddingProperties {
 
     public static final String CONFIG_PREFIX = "spring.ai.sensetimeai.sensenova.embedding";
 
-    public static final String DEFAULT_EMBEDDING_MODEL = SensetimeAiSensenovaApi.EmbeddingModel.EMBED.getValue();
-
     /**
      * Enable Sensetime AI Sensenova embedding client.
      */
@@ -27,7 +25,7 @@ public class SensetimeAiSensenovaEmbeddingProperties {
      */
     @NestedConfigurationProperty
     private SensetimeAiSensenovaEmbeddingOptions options = SensetimeAiSensenovaEmbeddingOptions.builder()
-            .withModel(DEFAULT_EMBEDDING_MODEL)
+            .withModel(SensetimeAiSensenovaApi.EmbeddingModel.EMBED.getValue())
             .build();
 
     public SensetimeAiSensenovaEmbeddingOptions getOptions() {

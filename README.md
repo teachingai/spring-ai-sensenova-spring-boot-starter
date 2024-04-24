@@ -18,6 +18,7 @@
 
 #### 资源
 
+- [查看模型列表](https://platform.sensenova.cn/doc?path=/chat/Models/GetModelList.md)
 - [商量大语言模型-通用](https://platform.sensenova.cn/doc?path=/model/llm/GeneralLLM.md)
 - [大语言模型](https://platform.sensenova.cn/doc?path=/chat/Introduction.md)
 

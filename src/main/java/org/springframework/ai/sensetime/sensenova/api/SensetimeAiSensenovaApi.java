@@ -440,8 +440,9 @@ public class SensetimeAiSensenovaApi {
 
     /**
      * List of well-known Sensetime AI Sensenova chat models.
-     * https://open.bigmodel.cn/dev/api#language
-     *
+     * 日日新-商量大语言模型-通用
+     * https://platform.sensenova.cn/doc?path=/chat/Models/GetModelList.md
+     * https://platform.sensenova.cn/doc?path=/model/llm/GeneralLLM.md
      * <p>
      * Sensetime AI Sensenova AI provides three API endpoints featuring five leading Large Language
      * Models:
@@ -454,29 +455,36 @@ public class SensetimeAiSensenovaApi {
      */
     public enum ChatModel {
 
-        GLM_3_TURBO("glm-3-turbo"),
-        GLM_4("glm-4"),
-        GLM_4V("glm-4v");
+        SENSECHAT("SenseChat", "模型最大上下文长度限制 4K(4096) token"),
+        SENSECHAT_32K("SenseChat-32K", "模型最大上下文长度限制 32K(32768) token"),
+        SENSECHAT_5("SenseChat-5", "模型最大上下文长度限制 128K(131072) token"),
+        SENSECHAT_FUNCTION_CALL("SenseChat-FunctionCall", "模型最大上下文长度限制 8K(8192) token"),
+        ;
 
         private final String value;
+        private final String desc;
 
-        ChatModel(String value) {
+        ChatModel(String value, String desc) {
             this.value = value;
+            this.desc = desc;
         }
 
         public String getValue() {
             return this.value;
         }
 
+        public String getDesc() {
+            return desc;
+        }
     }
 
     /**
      * List of well-known Sensetime AI Sensenova embedding models.
-     * https://open.bigmodel.cn/dev/api#text_embedding
+     * https://platform.sensenova.cn/doc?path=/model/embedding.md
      */
     public enum EmbeddingModel {
 
-        @JsonProperty("embedding-2") EMBED("embedding-2");
+        @JsonProperty("nova-embedding-stable") EMBED("nova-embedding-stable");
 
         private final String value;
 
@@ -492,6 +500,7 @@ public class SensetimeAiSensenovaApi {
 
     /**
      * Creates a model response for the given chat conversation.
+     *
      * @param chatRequest The chat completion request.
      * @return Entity response with {@link SensetimeAiSensenovaApi.ChatCompletion} as a body and HTTP status code
      * and headers.
@@ -512,8 +521,9 @@ public class SensetimeAiSensenovaApi {
 
     /**
      * Creates a streaming chat response for the given chat conversation.
+     *
      * @param chatRequest The chat completion request. Must have the stream property set
-     * to true.
+     *                    to true.
      * @return Returns a {@link Flux} stream from chat completion chunks.
      */
     public Flux<ChatCompletionChunk> chatCompletionStream(ChatCompletionRequest chatRequest) {
