@@ -42,7 +42,7 @@ public class SensetimeAiSensenovaChatClient
 
     public SensetimeAiSensenovaChatClient(SensetimeAiSensenovaApi sensetimeAiSensenovaApi) {
         this(sensetimeAiSensenovaApi, SensetimeAiSensenovaChatOptions.builder()
-                        .withModel(SensetimeAiSensenovaApi.ChatModel.GLM_3_TURBO.getValue())
+                        .withModel(SensetimeAiSensenovaApi.ChatModel.SENSECHAT.getValue())
                         .withMaxToken(ApiUtils.DEFAULT_MAX_TOKENS)
                         .withDoSample(Boolean.TRUE)
                         .withTemperature(ApiUtils.DEFAULT_TEMPERATURE)
